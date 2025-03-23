@@ -1,72 +1,66 @@
-import os;import version;import github;import owner;import instas;import instagram;import proxies;import colorama; import accounts
-owner.name=("natrix")
-github.url=("https://github.com/natrixdev") 
-
-requirements = "https://github.com/natrixdev/instagram-botter/blob/main/reqs.txt"
-
-owner_repos = "https://github.com/natrixdev?tab=repositories"
-howto_use="https://github.com/natrixdev/instagram-botter/blob/main/README.md"         
-                                                                                                     
-this.code = "https://github.com/natrixdev/instagram-botter/blob/main/main.py"
-
+import os
+import time
+import requests
 from instabot import likes, views, followers
+import colorama
 
-os.system("title Instagram followers, likes and views botter.")
-os.color("a")
+colorama.init()
+os.system("title Instagram Followers, Likes, and Views Botter.")
 
-def __main__:
- account_name=input("Account name ? ")
-   if account_name=="":
-     print('please input a real name')
-   else if req.on(`www.instagram.com/%account_name%`)==Flase:
-     print('I didnt found your instagram account')
- print("Please choose a botter category:")
- print("");print("[1] - Likes ");print("");print("[2] - Views ");print("");print("[1] - Followers ");print("");
-   choose=input('> ')
-       if choose=="1":
-          url=input('Paste your instagram post url (your account need to be public')
-          if req.url==False:
-       print('cannot find the post')
-          else: 
-       accnum=1
-            while True:
-                accounts.newInstagram('goto --like %url%')
-              accnum= accnum+1
-       print(str(accnum) + " likes done ")
-     else if choose="2":
-       url=input("please input your story url (need to be public and can be found on instagram's computer version")
-          if req.url==False:
-       print('cannot find the story/account')
-       else: 
-       req.url("https://www.instagram.com/stories/%account_name%/%url%/")
-       req.new accounts 
-             def __gen__:
-                  acounts.new Instagrams (forViews) 
-       else if choose=="3":
-          print("welcome to the followers botter for Instagram") 
-              print("")
-                  print("please donate $5 to this paypal to access the follower gen")
-              btc.ppl("https://paypal.me/InstaGenNtrx") # may not work from september to december 2022
-       btc.checkForTransac("local --ip & paypal.com/me")
-            if transac == True:
-                  print('welcome to the gen')
-                      &&code.acces('repl.fllwrs-code')
-       else:
-            print('money not on this account - Followers gen is locked for 24hrs on your machine.')
-            huu=time.now
-                huy=time.now+24h
-                    time_to_wait=huy-time.now+24h
-                        file.lock( time_to_wait ):
-                                                parse [ ]
-       arras = { true }
-       
-     
-       
-     gen = main()
-       url = req()
-        usages = req("https://github.com/natrixdev/")
-                  
-            
-   
-  
- 
+def main():
+    account_name = input("Account name? ")
+    
+    if account_name == "":
+        print("Please input a real name.")
+        return
+
+    response = requests.get(f"https://www.instagram.com/{account_name}/")
+    if response.status_code != 200:
+        print("I didn't find your Instagram account.")
+        return
+
+    print("\nPlease choose a bot category:")
+    print("[1] - Likes\n[2] - Views\n[3] - Followers")
+    
+    choose = input("> ")
+
+    if choose == "1":
+        url = input("Paste your Instagram post URL (your account must be public): ")
+        if not url.startswith("https://www.instagram.com/p/"):
+            print("Invalid post URL.")
+            return
+        
+        accnum = 1
+        while accnum <= 10:  # Set a limit to prevent infinite loops
+            likes.like(url)
+            accnum += 1
+            print(f"{accnum} likes done.")
+
+    elif choose == "2":
+        url = input("Please input your story URL (must be public): ")
+        if not url.startswith("https://www.instagram.com/stories/"):
+            print("Invalid story URL.")
+            return
+        
+        views.view(url)
+        print("Views sent successfully!")
+
+    elif choose == "3":
+        print("Welcome to the Instagram Followers bot.")
+        print("Please donate $5 to access the follower generator.")
+        print("PayPal: https://paypal.me/InstaGenNtrx")
+
+        # Simulated transaction check (replace with actual API if needed)
+        transaction_confirmed = input("Enter 'yes' if you've completed the payment: ").strip().lower()
+        
+        if transaction_confirmed == "yes":
+            print("Access granted. Generating followers...")
+            followers.follow(account_name)
+        else:
+            print("Payment not verified. Followers bot is locked for 24 hours.")
+
+    else:
+        print("Invalid option. Please choose 1, 2, or 3.")
+
+if __name__ == "__main__":
+    main()
