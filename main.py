@@ -1,66 +1,74 @@
 import os
 import time
 import requests
-from instabot import likes, views, followers
+from instabot import Bot
 import colorama
 
+# Initialize colorama for colored output
 colorama.init()
-os.system("title Instagram Followers, Likes, and Views Botter.")
+
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
 
 def main():
-    account_name = input("Account name? ")
+    clear_screen()
+    os.system("title Instagram Bot - Followers, Likes, and Views")
     
-    if account_name == "":
-        print("Please input a real name.")
+    bot = Bot()
+    
+    account_name = input("Enter your Instagram username: ")
+    if not account_name:
+        print("Error: Please input a valid username.")
         return
 
     response = requests.get(f"https://www.instagram.com/{account_name}/")
     if response.status_code != 200:
-        print("I didn't find your Instagram account.")
+        print("Error: Instagram account not found.")
         return
-
-    print("\nPlease choose a bot category:")
-    print("[1] - Likes\n[2] - Views\n[3] - Followers")
     
-    choose = input("> ")
-
-    if choose == "1":
-        url = input("Paste your Instagram post URL (your account must be public): ")
+    print("\nChoose a bot category:")
+    print("[1] - Likes")
+    print("[2] - Views")
+    print("[3] - Followers")
+    
+    choice = input("> ")
+    
+    if choice == "1":
+        url = input("Enter the Instagram post URL (public account required): ")
         if not url.startswith("https://www.instagram.com/p/"):
-            print("Invalid post URL.")
+            print("Error: Invalid post URL.")
             return
         
-        accnum = 1
-        while accnum <= 10:  # Set a limit to prevent infinite loops
-            likes.like(url)
-            accnum += 1
-            print(f"{accnum} likes done.")
-
-    elif choose == "2":
-        url = input("Please input your story URL (must be public): ")
+        print("Liking the post...")
+        bot.like(url)
+        print("✅ Likes added successfully!")
+    
+    elif choice == "2":
+        url = input("Enter the Instagram story URL (public account required): ")
         if not url.startswith("https://www.instagram.com/stories/"):
-            print("Invalid story URL.")
+            print("Error: Invalid story URL.")
             return
         
-        views.view(url)
-        print("Views sent successfully!")
-
-    elif choose == "3":
+        print("Viewing the story...")
+        bot.view_story(url)
+        print("✅ Views sent successfully!")
+    
+    elif choice == "3":
         print("Welcome to the Instagram Followers bot.")
-        print("Please donate $5 to access the follower generator.")
+        print("To access the follower generator, donate $5 via PayPal.")
         print("PayPal: https://paypal.me/InstaGenNtrx")
-
-        # Simulated transaction check (replace with actual API if needed)
+        
         transaction_confirmed = input("Enter 'yes' if you've completed the payment: ").strip().lower()
         
         if transaction_confirmed == "yes":
-            print("Access granted. Generating followers...")
-            followers.follow(account_name)
+            print("Generating followers...")
+            bot.follow(account_name)
+            print("✅ Followers added successfully!")
         else:
-            print("Payment not verified. Followers bot is locked for 24 hours.")
-
+            print("❌ Payment not verified. Followers bot is locked for 24 hours.")
+    
     else:
-        print("Invalid option. Please choose 1, 2, or 3.")
+        print("Error: Invalid selection. Please choose 1, 2, or 3.")
 
 if __name__ == "__main__":
     main()
